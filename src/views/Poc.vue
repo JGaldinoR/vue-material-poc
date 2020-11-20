@@ -1,30 +1,37 @@
 <template>
-  <div class="mdc-layout-grid">
-    <div class="mdc-layout-grid__inner">
-      <!--first column-->
-      <transition name="fade">
-
-            <div v-show="!buttonState" class="mdc-layout-grid__cell">
+      <transition name="grid-fade" class="grid-fade">
+    <div v-if="!buttonState" class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell">
                 <div
                 class="mdc-card element"
                 v-for="(item, index) in firstColumn"
                 :key="index"
-                @click="showName(item)"
-                >
-                <p>
-                    <i class="material-icons">face</i>
-                    {{ item }}
-                </p>
+                @click="showName(item)">
+                <div class="card-elements">
+                  <em class="material-icons face-icon">{{iconsFirstColumn[index]}}</em>
+                  <p class="mdc-card-item"> {{ item }}</p>
                 </div>
             </div>
-      
+          </div>
+            <div class="mdc-layout-grid__cell second-column">
+                <div
+                class="mdc-card element"
+                v-for="(item, index) in secondColumn"
+                :key="index"
+                @click="showName(item)">
+                <div class="card-elements">
+                  <em class="material-icons face-icon">{{iconsSecondColumn[index]}}</em>
+                  <p class="mdc-card-item">{{ item }}</p>
+                </div>
+            </div>
+          </div>
+    </div>
       </transition>
-      <!--button inactive fab code-->
-      <div v-if="buttonState" class="mdc-touch-target-wrapper">
+      <div class="buttons-div">
+    <div v-if="buttonState" class="mdc-touch-target-wrapper">
         <button
           class="mdc-fab mdc-fab--mini mdc-fab--touch"
-          @click="changeButtonState"
-        >
+          @click="changeButtonState">
           <div class="mdc-fab__ripple"></div>
           <span class="material-icons mdc-fab__icon">add</span>
           <div class="mdc-fab__touch"></div>
@@ -34,15 +41,13 @@
       <div v-else class="mdc-touch-target-wrapper button">
         <button
           class="mdc-fab mdc-fab--mini mdc-fab--touch"
-          @click="changeButtonState"
-        >
+          @click="changeButtonState">
           <div class="mdc-fab__ripple activeBbackround"></div>
           <span class="material-icons mdc-fab__icon activeButton">close</span>
           <div class="mdc-fab__touch"></div>
         </button>
       </div>
-    </div>
-  </div>
+      </div>
 </template>
 
 <script>
@@ -56,6 +61,9 @@ export default {
       "New medication",
       "New incident",
       "New progress note",
+    ]);
+
+    const secondColumn = ref([
       "Discharge",
       "Check out",
       "New treatment plan",
@@ -67,24 +75,38 @@ export default {
       console.log(itemName);
     };
 
+    const iconsFirstColumn = ref([
+      'person_add_alt_1',
+      'location_on',
+      'medical_services',
+      'error',
+      'note_add'
+      ]);
+
+    const iconsSecondColumn = ref([
+      'person_remove',
+      'location_off',
+      'local_hospital',
+      'calendar_today',
+      'group_add'
+
+
+      ]);
+
     const buttonState = ref(false);
 
     const changeButtonState = () => {
       buttonState.value = !buttonState.value;
-      /***
-    Aqui tienes que investigar como mandar a llamar la animación
-    de Keyframes o la que quieras, si es keyframes mandas a llamar
-    el evento aquí dentro, si es CCS puro, añade el la propiedad de CSS
-    a los divs, y ponle una propiedad reactiva para que se apague y prenda
-    el hover por ejemplo, o lo que sea la animación
-    ***/
     };
 
     return {
       firstColumn,
+      secondColumn,
       showName,
       buttonState,
       changeButtonState,
+      iconsFirstColumn,
+      iconsSecondColumn
     };
   },
 };
@@ -102,6 +124,7 @@ export default {
 }
 .mdc-card:hover {
   box-shadow: -3px 19px 17px 0px rgba(57, 50, 50, 0.65);
+  cursor: pointer;
 }
 .my-card {
   height: 350px;
@@ -109,6 +132,25 @@ export default {
 }
 .container {
   width: 45%;
+}
+
+.mdc-card-item {
+  margin: 0;
+}
+
+.face-icon {
+ margin-right: 10px;
+}
+
+.card-elements {
+  display: flex;
+  margin-top: 1.2rem;
+  margin-left: 1.5rem;
+  align-items: center;
+}
+
+.face-icon:hover, .card-elements:hover {
+  color: #F07E69
 }
 
 /**button inactive fab code*/
@@ -130,11 +172,29 @@ export default {
   background-color: rgb(0, 51, 102);
 }
 
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .5s;
+.mdc-touch-target-wrapper{
+  display: inline;
+  margin-left: 23rem;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+.mdc-layout-grid {
+padding: 15px;
+}
+
+.grid-fade-enter-active, .grid-fade-leave-active {
+transition: opacity .5s;
+}
+
+.grid-fade-enter-from, .grid-fade-leave-active /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.buttons-div {
+position: fixed;
+padding: 2em;
+left: 50%;
+top: 75%;
+transform: translateX(-50%);
 }
 
 </style>
