@@ -1,5 +1,5 @@
 <template>
-      <transition name="grid-fade" class="grid-fade">
+      <transition name="grid-fade" >
     <div v-if="!buttonState" class="mdc-layout-grid__inner">
             <div class="mdc-layout-grid__cell">
                 <div
@@ -185,7 +185,7 @@ padding: 15px;
 transition: opacity .5s;
 }
 
-.grid-fade-enter-from, .grid-fade-leave-active /* .fade-leave-active below version 2.1.8 */ {
+.grid-fade-enter-from, .grid-fade-leave-active  {
   opacity: 0;
 }
 
